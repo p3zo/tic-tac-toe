@@ -1,0 +1,18 @@
+services:
+  app:
+    restart: always
+    build: ./app
+    expose:
+      - "5000"
+    env_file: ./env_file
+    entrypoint: ["sh", "-c", "sleep infinity"]
+
+  nginx:
+    restart: always
+    image: "nginx:latest"
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app

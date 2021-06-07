@@ -1,0 +1,11 @@
+# secrets
+env_file
+
+# dependencies
+node_modules
+
+# dev config
+docker-compose.override.yml
+
+# system files
+.DS_Store

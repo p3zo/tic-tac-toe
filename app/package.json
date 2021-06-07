@@ -1,0 +1,38 @@
+{
+    "name": "tic-tac-toe",
+    "version": "0.1.0",
+    "private": true,
+    "author": "p3zo",
+    "description": "A web API that implements Tic-Tac-Toe",
+    "main": "./src/index.js",
+    "scripts": {
+        "start": "nodemon --exec babel-node src/index.js",
+        "test": "mocha --require @babel/register --exit",
+        "lint": "node node_modules/eslint/bin/eslint.js src"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.14.3",
+        "@babel/eslint-parser": "^7.13.10",
+        "@babel/node": "^7.14.2",
+        "@babel/preset-env": "^7.14.4",
+        "@babel/register": "^7.13.16",
+        "chai": "^4.3.4",
+        "chai-http": "^4.3.0",
+        "core-js": "^3.13.1",
+        "eslint": "^7.27.0",
+        "mocha": "^8.4.0",
+        "nodemon": "^2.0.7",
+        "regenerator-runtime": "^0.13.7"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    },
+    "babel": {
+        "ignore": [
+            "node_modules"
+        ],
+        "presets": [
+            "@babel/preset-env"
+        ]
+    }
+}
