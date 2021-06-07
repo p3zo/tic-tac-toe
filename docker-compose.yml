@@ -4,7 +4,6 @@ services:
     build: ./app
     expose:
       - "5000"
-    env_file: ./env_file
     entrypoint: ["sh", "-c", "sleep infinity"]
 
   nginx:

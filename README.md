@@ -59,8 +59,6 @@ Another Docker container runs an nginx reverse-proxy to sit in front of the node
 
 Install [Docker Compose](https://docs.docker.com/compose/install) and start the Docker daemon.
 
-Rename `env_file.template` to `env_file` and fill in the secrets. **Do NOT commit this file.**
-
 Rename `docker-compose.override.yml.example` to `docker-compose.override.yml`.
 
 ### Usage
