@@ -21,7 +21,7 @@ app.get("/", async (request, response) => {
         if (invalidBoardMsg) {
             response.status(400).send({ error: invalidBoardMsg });
         } else {
-            response.status(200).send({ newBoard: makeMove(board) });
+            response.status(200).send({ newBoard: makeMove(board, "o") });
         }
     }
 });

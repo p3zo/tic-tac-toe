@@ -1,5 +1,7 @@
 /* Defines game logic */
 
+const CENTER_IX = 4;
+
 const WINNING_SEQUENCES = [
     // horizontals
     [0, 1, 2],
@@ -120,6 +122,7 @@ function validateBoard(board) {
         return "Board has an invalid proportion of x's to o's";
     }
 
+    // TODO: use a separate error message for when a board has multiple winning sequences
     if (isBoardWon(board)) {
         return "Board is won";
     }
@@ -135,8 +138,7 @@ function validateBoard(board) {
     return false;
 }
 
-/* Returns the index of a random open square */
-function getRandomOpenIndex(board) {
+function getOpenIxs(board) {
     let openIxs = [];
 
     for (let i = 0; i < board.length; i++) {
@@ -145,7 +147,75 @@ function getRandomOpenIndex(board) {
         }
     }
 
-    return openIxs[Math.floor(Math.random() * openIxs.length)];
+    return openIxs;
+}
+
+/* Return the indices of winning moves for player x or o */
+function getWinningMove(board, player) {
+    const openIxs = getOpenIxs(board);
+
+    for (let i = 0; i < openIxs.length; i++) {
+        const newBoard = replaceCharAtIndex(board, i, player);
+
+        if (isBoardWon(newBoard)) {
+            return i;
+        }
+    }
+
+    return false;
+}
+
+/* Returns an element from an array at random */
+function chooseRandomFromArray(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* Returns the index of a random open square */
+function getRandomOpenIndex(board) {
+    const openIxs = getOpenIxs(board);
+
+    return chooseRandomFromArray(openIxs);
+}
+
+function getRandomOpenCornerIx(board) {
+    const openIxs = getOpenIxs(board);
+
+    const openCorners = openIxs.filter(i => i % 2 === 0 && i !== CENTER_IX);
+
+    return chooseRandomFromArray(openCorners);
+}
+
+/* Returns the index of a move */
+function getMove(board) {
+    // make a winning move if one exists
+    const oWinningMove = getWinningMove(board, "o");
+    if (oWinningMove) {
+        return oWinningMove;
+    }
+
+    // block x's winning move if one exists
+    const xWinningMove = getWinningMove(board, "x");
+    if (xWinningMove) {
+        return xWinningMove;
+    }
+
+    // take the center if it's open
+    if (board[CENTER_IX] === " ") {
+        return CENTER_IX;
+    }
+
+    // corners seem stronger than edges, so favor those
+    // TODO: favor corners that are not adjacent to an o
+    const cornerIx = getRandomOpenCornerIx(board);
+    if (cornerIx) {
+        return cornerIx;
+    }
+
+    // TODO: add more rules to improve the strategy
+    // See https://www.quora.com/Is-there-a-way-to-never-lose-at-Tic-Tac-Toe
+
+    // default to a random open index
+    return getRandomOpenIndex(board);
 }
 
 /* Replaces a range of characters in a string */
@@ -153,12 +223,11 @@ function replaceCharAtIndex(str, index, char) {
     return str.substr(0, index) + char + str.substr(index + char.length);
 }
 
-/* Adds an `o` to a valid board */
-function makeMove(board) {
-    // TODO: use a better strategy
-    const ix = getRandomOpenIndex(board);
+/* Adds a move to an index of valid board for player x or o */
+function makeMove(board, player) {
+    const ix = getMove(board);
 
-    return replaceCharAtIndex(board, ix, "o");
+    return replaceCharAtIndex(board, ix, player);
 }
 
 export {
